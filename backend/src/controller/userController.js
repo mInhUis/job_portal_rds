@@ -6,6 +6,7 @@ import {
   deleteUser
 } from '../models/userModel.js';
 
+
 export async function handleCreateUser(req, res) {
   try {
     const id = await createUser(req.body);

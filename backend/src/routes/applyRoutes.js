@@ -1,13 +1,29 @@
 import { Router } from 'express';
 import { authenticateToken, authorizeRoles } from '../middleware/auth.js';
 import { pool } from '../db/db.js';
+import upload from '../middleware/upload.js';
 
 const router = Router();
 
-router.post("/:jobId", authenticateToken, authorizeRoles("jobseeker"), async (req, res) => {
+router.post("/:jobId", authenticateToken, authorizeRoles("jobseeker"), upload.single("resume"), async (req, res) => {
     const { jobId } = req.params;
-    const { cover_letter } = req.body;
+    const { name,
+            email,
+            phone,
+            location, 
+            linkedin,
+            github,
+            
+            coverLetter,
+            yearsOfExperience,
+            availability,
+            agreeTerms
+           }
+      = req.body;
     const userId = req.user.id;
+    const resumePath = req.file ? `/uploads/resumes/${req.file.filename}` : null;
+    
+
 
     const [existing] = await pool.query(
         "SELECT * FROM applications WHERE job_id = ? AND user_id = ?", [jobId, userId]
@@ -17,7 +33,7 @@ router.post("/:jobId", authenticateToken, authorizeRoles("jobseeker"), async (re
     }
 
     await pool.query(
-        'INSERT INTO applications (job_id, user_id, cover_letter) VALUES (?, ?, ?)', [jobId, userId, cover_letter]
+        'INSERT INTO applications (job_id, user_id, name, email, phone, location, linkedin, github, resume, coverLetter, yearsOfExperience, availability, agreeTerms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [jobId, userId,  name,email, phone, location, linkedin, github, resumePath, coverLetter, yearsOfExperience, availability, agreeTerms ]
     );
     res.status(201).json({ message: 'Application submitted successfully' });
 });

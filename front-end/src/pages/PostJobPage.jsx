@@ -160,7 +160,7 @@ export default function PostJobPage() {
       location: jobData.location,
       salary: jobData.salary, // Convert range to string
       department: jobData.department,
-      requirements: jobData.requirements, // Remove empty strings
+      requirements: jobData.requirements, 
       benefits: jobData.benefits,
       skills: jobData.skills,
       applicationDeadline: jobData.applicationDeadline,

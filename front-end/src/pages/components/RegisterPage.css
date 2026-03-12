@@ -193,32 +193,3 @@
   }
 }
 
-/* Role Field Styles */
-.role-field {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.role-label {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.role-select {
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  background: rgba(255,255,255,0.9);
-  color: #333;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.role-select:focus {
-  border-color: #667eea;
-}

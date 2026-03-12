@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------
+  # 1. The Node.js Backend
+  # ----------------------------------------
+  backend:
+    build: ./backend
+    container_name: job_portal_backend
+    ports:
+      - "5000:5000"
+    # Point to your RDS .env file
+    env_file:
+      - ./backend/.env
+
+  # ----------------------------------------
+  # 2. The React/Vite Frontend (Nginx)
+  # ----------------------------------------
+  frontend:
+    build: ./front-end
+    container_name: job_portal_frontend
+    ports:
+      - "5173:5173" # Swapped to standard HTTP port 80 for production
+    depends_on:
+      - backend

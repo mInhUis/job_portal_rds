@@ -136,11 +136,11 @@ const handleEdit = (jobId) => {
 const handleDelete = async (jobId) => {
   try {
     const token = localStorage.getItem("token");
-
-    const res =  fetch(`http://localhost:5000/api/jobs/${jobId}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "aplication/json", authorization: `Bearer ${token}`
-    }      
+                
+    const res = await axios.delete(`/jobs/${jobId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
       if (res.ok) {
         console.log("Job deleted successfully");

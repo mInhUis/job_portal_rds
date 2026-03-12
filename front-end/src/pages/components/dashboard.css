@@ -414,7 +414,7 @@
     width: 100%;
     height: auto !important;
     margin-top: 0;
-    position: fixed !important;
+    position: relative !important;
   }
 
   .main-content {

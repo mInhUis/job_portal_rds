@@ -28,11 +28,12 @@ export async function loginUser(req, res) {
 
   if (!user) return res.status(404).json({ error: 'User not found' });
 
+  // Always compare the raw password with the hashed password stored in the database
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ error: 'Invalid password' });
 
   const token = jwt.sign({ id: user.id ,email: user.email, name: user.name, role:user.role}, process.env.JWT_SECRET, { expiresIn: '30d' });
   res.json({
-      token
-    });
+    token
+  });
 }

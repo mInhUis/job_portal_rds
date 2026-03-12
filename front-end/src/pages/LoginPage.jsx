@@ -124,7 +124,7 @@ const LoginPage = () => {
     // TODO: Save token (e.g. localStorage), redirect user, etc.
     localStorage.setItem("token", data.token);
     const decodedToken = jwtDecode(data.token);
-    alert(decodedToken.role);
+
     const dashboardByRole = {
       employer: '/v2' ,
       jobseeker: '/dashboard'
