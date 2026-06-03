@@ -170,20 +170,26 @@ export default function EditJobPage() {
       contactEmail: jobData.contactEmail,
     };
     console.log(JSON.stringify(payload));
-    const res = await fetch(`http://localhost:5000/api/jobs/${id}`, {
+
+    const res = await axios.put(`/jobs/${id}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+ /*   const res = await fetch(`http://localhost:5000/api/jobs/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
-    });
+    });*/
 
-    const result = await res.json();
+    //const result = await res.json();
 
     if (!res.ok) throw new Error(result.message || "Failed to post job");
 
-    console.log("Job edited:", result);
+    console.log("Job edited:", res.data);
     alert("Job successfully edited!");
     navigate("/v2");
   } catch (error) {

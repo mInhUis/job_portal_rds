@@ -47,7 +47,7 @@ import "./components/postjob.css"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { jwtDecode } from "jwt-decode"
-
+import axios from "../util/axios.js"
 export default function PostJobPage() {
   const [activeStep, setActiveStep] = useState(0)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -166,8 +166,15 @@ export default function PostJobPage() {
       applicationDeadline: jobData.applicationDeadline,
       contactEmail: jobData.contactEmail,
     };
+
     console.log(JSON.stringify(payload));
-    const res = await fetch("http://localhost:5000/api/jobs", {
+
+    const res = await axios.post(`/jobs`, payload,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    /*const res = await fetch("http://localhost:5000/api/jobs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -176,11 +183,9 @@ export default function PostJobPage() {
       body: JSON.stringify(payload),
     });
 
-    const result = await res.json();
+    const result = await res.json();*/
 
-    if (!res.ok) throw new Error(result.message || "Failed to post job");
-
-    console.log("Job published:", result);
+    console.log("Job published:", res.data /*result*/);
     alert("Job successfully published!");
     navigate("/v2");
   } catch (error) {

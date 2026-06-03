@@ -1,25 +1,59 @@
+# version: '3.8'
+
+# services:
+#   # ----------------------------------------
+#   # 1. The Node.js Backend
+#   # ----------------------------------------
+#   backend:
+#     build: ./backend
+#     container_name: job_portal_backend
+#     # Point to your RDS .env file
+#     env_file:
+#       - ./backend/.env  
+#     restart: always
+#   # ----------------------------------------
+#   # 2. The React/Vite Frontend (Nginx)
+#   # ----------------------------------------
+#   frontend:
+#     build: ./front-end
+#     container_name: job_portal_frontend
+#     ports:
+#       - "80:80" # Swapped to standard HTTP port 80 for production
+#     depends_on:
+#       - backend
+
+#   db:
+#     image: mysql:8
+#     container_name: db
+#     environment:
+#       MYSQL_ROOT_PASSWORD: Concocon911@
+#       MYSQL_DATABASE: employment_agency_db
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - db_data:/var/lib/mysql
+
+# volumes:
+#   db_data:
 version: '3.8'
 
 services:
-  # ----------------------------------------
-  # 1. The Node.js Backend
-  # ----------------------------------------
   backend:
     build: ./backend
     container_name: job_portal_backend
-    ports:
-      - "5000:5000"
-    # Point to your RDS .env file
     env_file:
       - ./backend/.env
+    restart: always
+    # NOTE: no depends_on — backend should start independently
+    ports: 
+      - "5000:5000"
 
-  # ----------------------------------------
-  # 2. The React/Vite Frontend (Nginx)
-  # ----------------------------------------
+    
   frontend:
     build: ./front-end
     container_name: job_portal_frontend
     ports:
-      - "5173:5173" # Swapped to standard HTTP port 80 for production
+      - "80:80"
     depends_on:
       - backend
+    restart: always

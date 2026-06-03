@@ -24,6 +24,7 @@ import { FcGoogle } from "react-icons/fc";
 import { BsLinkedin } from "react-icons/bs";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import {jwtDecode} from 'jwt-decode';
+import axios from "../util/axios.js"
 const StyledCard = styled(Card)(({ theme }) => ({
   width: "100%",
   maxWidth: 450,       // limit max width
@@ -79,10 +80,10 @@ const LoginPage = () => {
 
   const testBackendConnection = async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/ping");
-    const data = await res.json();
-    console.log("Backend response:", data);
-    alert(`Success: ${data.message}`); // shows "pong" if working
+    const res = await axios.get("/ping");
+    
+    console.log("Backend response:", res.data);
+    alert(`Success: ${res.data.message}`); // shows "pong" if working
   } catch (err) {
     console.error("Error connecting to backend:", err);
     alert("Failed to connect to backend.");
@@ -102,41 +103,34 @@ const LoginPage = () => {
   setError(""); // clear previous error
 
   try {
-    const response = await fetch("http://localhost:5000/api/auth/login", {  // replace with your backend URL
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
+    // Make sure your Axios instance has the correct baseURL configured, 
+    // or change this to "/api/auth/login" to match your old fetch URL
+    const response = await axios.post(`/auth/login`, { 
+      email, 
+      password 
     });
 
-    if (!response.ok) {
-      // handle HTTP errors
-      const errorData = await response.json();
-      setError(errorData.message || "Login failed. Please try again.");
-      return;
-    }
-
-    const data = await response.json();
-    // e.g. data might include user info and JWT token
+    // Axios parses the JSON automatically. No await needed!
+    const data = response.data; 
     console.log("Login success:", data);
 
-    // TODO: Save token (e.g. localStorage), redirect user, etc.
+    // Save token and decode
     localStorage.setItem("token", data.token);
     const decodedToken = jwtDecode(data.token);
 
     const dashboardByRole = {
-      employer: '/v2' ,
+      employer: '/v2',
       jobseeker: '/dashboard'
     };
+    
+    // Redirect based on role
     navigate(dashboardByRole[decodedToken.role] || '/');
 
-
-    // Example: redirect or update UI
-    // navigate("/dashboard");
-
   } catch (err) {
-    setError("Network error. Please try again.");
+    // Extract the specific error message sent by your backend (e.g., "Invalid password")
+    const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+    setError(errorMessage);
+    console.error("Login error:", errorMessage);
   } finally {
     setLoading(false);
   }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './RegisterForm.css';
-
+import axios from "../../util/axios.js"
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -70,34 +70,31 @@ const RegisterForm = () => {
     }
 
     setIsSubmitting(true);
-    
     try {
+      const response = await axios.post(`/auth/register`,formData)
+  
+    /*try {
     const response = await fetch('http://localhost:5000/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
-    });
+    });*/
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message || 'Registration failed');
-    }
-
-    console.log('Registration successful:', result);
+  
+    console.log('Registration successful:', response.data);
     alert('Registration successful! Welcome to our platform.');
 
     // Reset form
 
 
-  } catch (error) {
-    console.error('Registration error:', error);
-    alert(error.message || 'Something went wrong. Please try again.');
-  } finally {
-    setIsSubmitting(false);
-  }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert(error.response?.data?.error || error.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const togglePasswordVisibility = () => {
