@@ -6,6 +6,9 @@ import jobRoutes from './routes/jobRoutes.js';
 import applyRoutes from './routes/applyRoutes.js';
 import testRoutes from './routes/testRoutes.js';
 import cors from 'cors';
+
+import promBundle from 'express-prom-bundle';
+
 dotenv.config();
 const corsOptions = {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
@@ -29,3 +32,12 @@ app.use('/login', testRoutes);
 
 
 export default app;
+
+const metricsMiddleware = promBundle({
+    includeMethod: true,
+    includePath: true,
+    includeStatusCode: true,
+    promClient: { collectDefaultMetrics: {} },  // Node.js runtime metrics
+}); 
+
+app.use(metricsMiddleware);
