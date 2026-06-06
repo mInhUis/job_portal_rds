@@ -1,0 +1,39 @@
+name: Frontend CICD
+on:
+  push:
+    branches: [main]
+    paths: ['front-end/**']
+
+jobs:
+  sync and push:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with: 
+          node-version: 20
+
+      - name: confif AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+
+        with: 
+          role-to-assume: arn:aws:iam::698220459817:role/github-actions-deploy
+          aws-region: us-east-1
+
+      - name: bBuild
+        working-directory: ./front-end
+        run: |
+          npm ci 
+          npm run build
+
+      - name: Deploy to S3 and Invalidate CloudFront
+        run: |
+          aws s3 sync dist/ s3://${{ vars.FRONTEND_BUCKET }}/ --delete
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DIST_ID }} \
+            --paths "/*"
