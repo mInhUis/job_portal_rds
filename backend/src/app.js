@@ -7,7 +7,7 @@ import applyRoutes from './routes/applyRoutes.js';
 import testRoutes from './routes/testRoutes.js';
 import cors from 'cors';
 
-import promBundle from 'express-prom-bundle';
+// import promBundle from 'express-prom-bundle';
 
 dotenv.config();
 const corsOptions = {
@@ -33,11 +33,13 @@ app.use('/login', testRoutes);
 
 export default app;
 
-const metricsMiddleware = promBundle({
-    includeMethod: true,
-    includePath: true,
-    includeStatusCode: true,
-    promClient: { collectDefaultMetrics: {} },  // Node.js runtime metrics
-}); 
+// const metricsMiddleware = promBundle({
+//     includeMethod: true,
+//     includePath: true,
+//     includeStatusCode: true,
+//     promClient: { collectDefaultMetrics: {} },  // Node.js runtime metrics
+// }); 
 
-app.use(metricsMiddleware);
+// app.use(metricsMiddleware);
+
+// TEST: Triggering GitHub Actions Backend CI/CD pipeline
