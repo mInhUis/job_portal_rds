@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy to S3 and Invalidate CloudFront
         run: |
-          aws s3 sync dist/ s3://${{ vars.FRONTEND_BUCKET }}/ --delete
+          aws s3 sync front-end/dist/ s3://${{ vars.FRONTEND_BUCKET }}/ --delete
           aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.CLOUDFRONT_DIST_ID }} \
             --paths "/*"
