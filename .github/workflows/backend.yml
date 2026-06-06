@@ -22,18 +22,25 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::698220459817:role/github-actions-deploy
           aws-region: ${{ env.AWS_REGION }}
+      
+      # Setup Docker Buildx (Required for advanced cache backends)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to ECR
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push
-        working-directory: ./backend
-        run: |
-          IMAGE="${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}"
-          docker build -t $IMAGE:${{ github.sha }} -t $IMAGE:latest .
-          docker push $IMAGE:${{ github.sha }}
-          docker push $IMAGE:latest
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:${{ github.sha }}
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
     needs: build-and-push
