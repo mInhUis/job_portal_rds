@@ -51,7 +51,7 @@ jobs:
           aws-region: ap-southeast-2
 
       - name: Install Ansible
-        run: 
+        run: |
           pip install "ansible-core>=2.13.9" boto3
           ansible --version
           ansible-galaxy collection install amazon.aws
