@@ -28,7 +28,7 @@
         mode: '0755'
         owner: ubuntu
         group: ubuntu
-        become: true
+      become: true
 
     - name: Copy .env file to the server
       copy:
@@ -37,7 +37,7 @@
         mode: '0600'
         owner: ubuntu
         group: ubuntu
-        become: true
+      become: true
 
     - name: Run new container
       shell: |
