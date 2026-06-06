@@ -5,7 +5,7 @@
     ansible_connection: amazon.aws.aws_ssm
     ansible_aws_ssm_bucket_name: "job-portal-ssm-ansible-access"
     ansible_aws_ssm_region: "ap-southeast-2"
-    image = "{{ ecr_registry }}/job_portal_backend:{{ image_tag }}"
+    image: "{{ ecr_registry }}/job_portal_backend:{{ image_tag }}"
   tasks: 
     - name: login aws ecr
       shell: |
