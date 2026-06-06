@@ -65,13 +65,21 @@ packer {
   }
 }
 
+data "amazon_vpc" "public" {
+  filters = {
+    "tag:Name" = "job-portal-ap-southeast-vpc-1"
+  }
+}
+
+data "amazon"
 # 1. Define the base image and AWS region
 source "amazon-ebs" "ubuntu" {
   ami_name      = "nodejs-backend-base-{{timestamp}}"
   instance_type = "t2.micro"
   region        = "ap-southeast-2"
   profile       = "shadowslvae2"
-
+  
+  associate_public_ip_address = true
   # Automatically find the latest official Ubuntu 22.04 AMI
   source_ami_filter {
     filters = {

@@ -21,9 +21,17 @@
 
     - name: Run new container
       shell: |
-        "docker run -d --name backend --restart always \
+        docker run -d --name backend --restart always \
           -p 5000:5000 \
           --env-file /opt/app/.env \
-          {{ image }}"
-      
+          {{ image }}
 
+    # - name: Run backend container natively
+    #   community.docker.docker_container:
+    #     name: backend
+    #     image: "{{ image }}"
+    #     state: started
+    #     restart_policy: always
+    #     published_ports:
+    #       - "5000:5000"
+    #     env_file: /opt/app/.env
