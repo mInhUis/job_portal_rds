@@ -25,7 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applyRoutes);
 app.get('/api/ping', (req, res) => {
-    res.json({ message: 'pingpongpongasv' });
+    res.json({ message: 'ping' });
 });
 /* git add .
 git commit -m "test backned cicd pipeline"
