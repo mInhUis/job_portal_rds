@@ -21,24 +21,24 @@
     
     #add .env and run new container
 
-    - name: Ensure application directory exists
-      file:
-        path: /opt/app
-        state: directory
-        mode: '0755'
-        owner: ubuntu
-        group: ubuntu
-      become: true
+      vars:
+        # Replace 'job-portal-db-secret' with your exact secret name in AWS
+        db_secrets: "{{ lookup('amazon.aws.aws_secret', 'db_credentials') }}"
 
-    - name: Copy .env file to the server
+
+    - name: Fetch secrets and create .env file on the server
       copy:
-        src: files/.env  # Path to the file on your runner/control node
         dest: /opt/app/.env
         mode: '0600'
         owner: ubuntu
         group: ubuntu
+        content: |
+          DB_HOST={{ db_secrets.host }}
+          DB_USER={{ db_secrets.username }}
+          DB_PASSWORD={{ db_secrets.password }}
+          DB_NAME={{ db_secrets.dbname }}
       become: true
-
+      
     - name: Run new container
       shell: |
         docker run -d --name backend --restart always \
