@@ -20,6 +20,15 @@
     - name: stop old container
       shell: docker rm -f backend || true 
     
+    - name: ensure the path of saving secrets exist
+      file:
+        path:
+        state: directory
+        mode: '0755'
+        owner: ubuntu
+        group: ubuntu
+      become: true
+
     #add .env and run new container
     - name: Fetch secrets and create .env file on the server
       copy:
