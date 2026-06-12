@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths: 
       - 'monitoring/**'
-      - 'ansible/monito_playbook.yml'
+      - 'ansible/monitor_playbook.yml'
 
 env:
   AWS_REGION: ap-southeast-2
