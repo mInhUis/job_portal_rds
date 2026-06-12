@@ -1,15 +1,20 @@
 plugin: amazon.aws.aws_ec2
 regions:
   - ap-southeast-2
-filters:
-  tag:Name: 
-    - app-backend       # matches the ASG tag from Phase 10
-    - ops-monitoring-server
-  instance-state-name: running
-hostnames:
-  - tag:Name
-compose: 
-  ansible_host: instance-id
+keyed_groups:
+  - prefix: tag
+    key: ec2_tags
+
+
+# filters:
+#   tag:Name: 
+#     - app-backend       # matches the ASG tag from Phase 10
+#     - ops-monitoring-server
+#   instance-state-name: running
+# hostnames:
+#   - tag:Name
+# compose: 
+#   ansible_host: instance-id
 
 # plugin: amazon.aws.aws_ec2
 # region:
