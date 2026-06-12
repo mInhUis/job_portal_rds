@@ -7,7 +7,7 @@ filters:
     - ops-monitoring-server
   instance-state-name: running
 hostnames:
-  - instance-id
+  - tag:Name
 compose: 
   ansible_host: instance-id
 
