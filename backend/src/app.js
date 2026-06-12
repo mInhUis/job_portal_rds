@@ -28,7 +28,7 @@ app.get('/api/ping', (req, res) => {
     res.json({ message: 'pingccccc cc cc cccccccc ccc  cc cc  cccc cccc ccc cc ccc  cc con cac tuoi lon scc cc a cc' });
 });
 /* git add .
-git commit -m "test backned cicd pipeline"
+git commit -m "test monitoring cicd pipeline"
 git push*/
 app.use('/login', testRoutes);
 
