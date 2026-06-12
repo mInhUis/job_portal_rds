@@ -25,17 +25,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applyRoutes);
 app.get('/api/ping', (req, res) => {
-    res.json({ message: 'pingcccccc cc  cc cc ccc  cc con cac tuoi lon scc cc a cc' });
+    res.json({ message: 'pingcccccc cc  cccc ccc cc ccc  cc con cac tuoi lon scc cc a cc' });
 });
 /* git add .
 git commit -m "test backned cicd pipeline"
 git push*/
 app.use('/login', testRoutes);
 
-
-
-export default app;
-
+// prometheus bundle
 const metricsMiddleware = promBundle({
     includeMethod: true,
     includePath: true,
@@ -44,5 +41,7 @@ const metricsMiddleware = promBundle({
 }); 
 
 app.use(metricsMiddleware);
+
+export default app;
 
 // TEST: Triggering GitHub Actions Backend CI/CD pipeline
