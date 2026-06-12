@@ -43,4 +43,4 @@ jobs:
       - name: run the monitoring playbook
         working-directory: ./ansible
         run: |
-          ansible-playbook -i inventory/aws_ec2.yml monitor_playbook.yml 
+          ansible-playbook -i inventory/aws_ec2.yml monitor_playbook.yml -vvv
