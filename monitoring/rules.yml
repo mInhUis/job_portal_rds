@@ -27,3 +27,9 @@ groups:
       # RECORDING RULE 1: Pre-calculate total API requests per second
       - record: job:http_requests:rate5m
         expr: sum by (job) (rate(http_requests_total[5m]))
+
+#         git add .
+# git commit -m "test monitoring cicd pipeline"
+# git push
+
+# testingbro
