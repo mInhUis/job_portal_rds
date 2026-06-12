@@ -1,5 +1,5 @@
 - name: deploy backend
-  hosts: app-backend
+  hosts: all
   become: yes
   vars:
     ansible_connection: amazon.aws.aws_ssm
