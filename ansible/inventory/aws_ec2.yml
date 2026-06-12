@@ -2,7 +2,9 @@ plugin: amazon.aws.aws_ec2
 regions:
   - ap-southeast-2
 filters:
-  tag:Name: app-backend       # matches the ASG tag from Phase 10
+  tag:Name: 
+    - app-backend       # matches the ASG tag from Phase 10
+    - ops-monitoring-server
   instance-state-name: running
 hostnames:
   - instance-id
