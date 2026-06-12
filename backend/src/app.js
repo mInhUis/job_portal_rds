@@ -38,6 +38,15 @@ const metricsMiddleware = promBundle({
     includePath: true,
     includeStatusCode: true,
     promClient: { collectDefaultMetrics: {} },  // Node.js runtime metrics
+
+    autoregisterUpMetric: true,
+    metricsPath: '/metrics',
+    urlValueParser: {
+        minHexLength: 4,
+        extraMasks: [
+            '^[0-9]+$' // Masks pure numeric IDs (e.g., /users/123 -> /users/#val)
+        ]
+    }
 }); 
 
 app.use(metricsMiddleware);

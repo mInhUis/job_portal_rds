@@ -1,0 +1,46 @@
+- name: Deploy Prometheus monitoring server
+  hosts: tag_Name_ops_monitoring_server
+  become: yes
+  vars:
+    ansible_connection: amazon.aws.aws_ssm
+    ansible_aws_ssm_region: "ap-southeast-2"
+    ansible_aws_ssm_bucket_name: "job-portal-ssm-ansible-access"
+
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Ensure Prometheus config directory exists on host
+      file:
+        path: /etc/prometheus
+        state: directory
+        mode: '0755'
+
+    - name: Copy prometheus.yml to host
+      copy:
+        src: ../monitoring/prometheus.yml
+        dest: /etc/prometheus/prometheus.yml
+        mode: '0644'
+
+    - name: Copy rules.yml to host
+      copy:
+        src: ../monitoring/rules.yml
+        dest: /etc/prometheus/rules.yml
+        mode: '0644'
+
+    - name: Run Prometheus Container
+      shell: |
+        docker rm -f prometheus || true
+        docker run -d \
+          --name prometheus \
+          -p 9090:9090 \
+          -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+          -v /etc/prometheus/rules.yml:/etc/prometheus/rules.yml \
+          -v prometheus_data:/prometheus \
+          --restart always \
+          prom/prometheus:latest
+          
+          

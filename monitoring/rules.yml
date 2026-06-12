@@ -1,0 +1,29 @@
+# rules.yml
+groups:
+  - name: Application_Alerts
+    rules:
+      # ALERTING RULE 1: Is the EC2 instance completely offline?
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} is down"
+          description: "Prometheus could not scrape the target for more than 1 minute."
+
+      # ALERTING RULE 2: Is the Express API throwing 500 Errors?
+      - alert: HighErrorRate
+        # Checks if HTTP 500 errors are more than 5% of total traffic
+        expr: rate(http_requests_total{status="500"}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 500 Error Rate on Backend"
+
+  - name: Pre_Calculated_Metrics
+    rules:
+      # RECORDING RULE 1: Pre-calculate total API requests per second
+      - record: job:http_requests:rate5m
+        expr: sum by (job) (rate(http_requests_total[5m]))

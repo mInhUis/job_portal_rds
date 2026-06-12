@@ -1,0 +1,46 @@
+name: Monitor CI/CD
+on:
+  push:
+    branches: [main]
+    paths: 
+      - 'monitoring/**'
+      - 'ansible/monito_playbook.yml'
+
+env:
+  AWS_REGION: ap-southeast-2
+  ECR_REPO: job_portal_backend
+
+jobs:
+#install ansible and docker
+  install-ansible-docker:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # for OIDC keyless auth
+      contents: read
+    steps: 
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::698220459817:role/github-actions-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Ansible
+        run: |
+          pip install "ansible-core>=2.13.9" boto3
+          ansible --version
+          ansible-galaxy collection install amazon.aws
+      
+      - name: install aws ssm plugin
+        run: | 
+          curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+          sudo dpkg -i session-manager-plugin.deb
+
+      - name: run the monitoring playbook
+        working-directory: ./ansible
+        run: |
+          ansible-playbook -i inventory/aws_ec2.yml monitor_playbook.yml 
