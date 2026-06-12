@@ -1,9 +1,16 @@
 plugin: amazon.aws.aws_ec2
 regions:
   - ap-southeast-2
+
+hostnames:
+  - instance-id
+
 keyed_groups:
   - prefix: tag
     key: ec2_tags 
+
+# compose:
+#   ansible_host: instance-id
 
 
 # filters:
