@@ -2,7 +2,7 @@ name: Backend CI/CD
 on:
   push:
     branches: [main]
-    paths: ['backend/**']
+    paths: ['backend/**'] 
 
 env:
   AWS_REGION: ap-southeast-2
@@ -23,7 +23,7 @@ jobs:
           role-to-assume: arn:aws:iam::698220459817:role/github-actions-deploy
           aws-region: ${{ env.AWS_REGION }}
       
-      # Setup Docker Buildx (Required for advanced cache backends)
+  
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
