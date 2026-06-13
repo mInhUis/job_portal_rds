@@ -27,6 +27,12 @@ app.use('/api/applications', applyRoutes);
 app.get('/api/ping', (req, res) => {
     res.json({ message: 'pingccccc ccc cc cc cccc cc cccc ccc  cc cc cc  cccc cccc ccc cc ccc  cc con cac tuoi lon scc cc a cc' });
 });
+
+// Chaos Engineering Test Route
+app.get('/api/force-500-error', (req, res, next) => {
+    // This immediately throws an exception, forcing Express to return a 500 error
+    next(new Error("Simulated Server Crash for Prometheus Testing"));
+});
 /* git add .
 git commit -m "test monitoring cicd pipeline"
 git push*/
