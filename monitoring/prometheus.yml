@@ -14,4 +14,12 @@ scrape_configs:
         regex: job-portal-backend.*
         action: keep
 
+  - job_name: 'asg_webservers_http'
+    ec2_sd_configs:
+      - region: ap-southeast-2
+        port: 5000
+    relabel_configs:
+      - source_labels: [__meta_ec2_tag_Name]
+        regex: job-portal-backend.*
+        action: keep
 # just_testing test test test test
