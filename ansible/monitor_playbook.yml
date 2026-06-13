@@ -8,11 +8,11 @@
 
 
   tasks:
-    - name: Ensure Docker is installed
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
+    # - name: Ensure Docker is installed
+    #   apt:
+    #     name: docker.io
+    #     state: present
+    #     update_cache: yes
 
 
     - name: Ensure Prometheus config directory exists on host
